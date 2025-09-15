@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             RolePermissionSeeder::class,
             DefectTypeSeeder::class,
             LocationSeeder::class,
+            DefectSeeder::class,
         ]);
 
         // (opcional) Si quieres crear un usuario demo además:
