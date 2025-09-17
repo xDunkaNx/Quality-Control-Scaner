@@ -13,14 +13,19 @@ class DefectController extends Controller
 {
     public function index(Request $r)
     {
-        $defects = Defect::with(['product','type','location','reporter'])
-            ->when($r->status, fn($q)=>$q->where('status',$r->status))
+        $defects = \App\Models\Defect::with(['product','type','location','reporter'])
+            ->when($r->status, fn($q)=>$q->where('status', $r->status))
+            ->when($r->type_id, fn($q)=>$q->where('defect_type_id', $r->type_id))
+            ->when($r->loc_id, fn($q)=>$q->where('location_id', $r->loc_id))
             ->when($r->date_from, fn($q)=>$q->whereDate('found_at','>=',$r->date_from))
             ->when($r->date_to, fn($q)=>$q->whereDate('found_at','<=',$r->date_to))
             ->latest('found_at')
-            ->paginate(50);
+            ->paginate(50)
+            ->appends($r->query());
 
-        return view('defects.index', compact('defects'));
+        $types = \App\Models\DefectType::orderBy('name')->get(['id','name']);
+        $locs  = \App\Models\Location::orderBy('name')->get(['id','name']);
+        return view('defects.index', compact('defects','types','locs'));
     }
 
     public function create()
@@ -95,4 +100,23 @@ class DefectController extends Controller
 
         return redirect()->route('defects.index')->with('ok','Defecto registrado.');
     }
+    public function scan()
+    {
+        $locations = \App\Models\Location::orderBy('name')->get(['id','name']);
+        $types     = \App\Models\DefectType::orderBy('name')->get(['id','name']);
+        return view('defects.scan', compact('locations','types'));
+    }
+
+    public function updateStatus(Request $r, \App\Models\Defect $defect)
+    {
+        $r->validate(['status'=>'required|in:open,review,closed,scrapped']);
+        $defect->status = $r->status;
+        if ($r->status === 'closed' && !$defect->resolved_at) {
+            $defect->resolved_at = now();
+        }
+        $defect->save();
+
+        return back()->with('ok','Estado actualizado');
+    }
+
 }
