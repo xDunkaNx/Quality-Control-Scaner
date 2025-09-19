@@ -33,25 +33,31 @@
                         <!-- Logo -->
                         <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
                             <div class="flex-shrink-0 text-xl font-bold">
-                                MyApp
+                                Quality Control Scanner
                             </div>
                             <div class="hidden sm:block sm:ml-6">
                                 <div class="flex space-x-4">
                                     <a href="{{ route('defects.index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Defectos</a>
                                     <a href="{{ route('defects.scan') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Scanear</a>
-                                    <a href="{{ route('reports.defects.weekly') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Reportes</a>
+                                    {{-- <a href="{{ route('reports.defects.weekly') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Reportes</a> --}}
 
                                     <!-- Menú de usuario -->
-                                    <div class="relative">
-                                        <button class="text-white" aria-haspopup="true">
-                                            {{ Auth::user()->name }}
-                                        </button>
-                                        <div class="absolute right-0 w-48 mt-2 origin-top-right bg-white shadow-lg rounded-md hidden" id="user-dropdown">
-                                            <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700">Perfil</a>
-                                            <a href="{{ route('logout') }}" class="block px-4 py-2 text-sm text-gray-700">Cerrar sesión</a>
-                                        </div>
-                                    </div>
                                 </div>
+                            </div>
+                        </div>
+                        
+                        <div class="relative text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                            <button class="text-white" aria-haspopup="true">
+                                {{ Auth::user()->name }}
+                            </button>
+                            <div class="absolute right-0 w-48 mt-2 origin-top-right bg-white shadow-lg rounded-md hidden" id="user-dropdown">
+                                <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700">Perfil</a>
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit" class="block px-4 py-2 text-sm text-gray-700 w-full text-left">
+                                        Cerrar sesión
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -62,8 +68,8 @@
             <div class="sm:hidden" id="mobile-menu">
                 <div class="px-2 pt-2 pb-3 space-y-1">
                     <a href="{{ route('defects.index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Defectos</a>
-                    <a href="{{ route('defects.create') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Registrar Defecto</a>
-                    <a href="{{ route('reports.defects.weekly') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Reportes</a>
+                    <a href="{{ route('defects.scan') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Scanear</a>
+                    {{-- <a href="{{ route('reports.defects.weekly') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Reportes</a> --}}
 
                     <!-- Menú de usuario para móvil -->
                     <a href="{{ route('profile.edit') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Perfil</a>
