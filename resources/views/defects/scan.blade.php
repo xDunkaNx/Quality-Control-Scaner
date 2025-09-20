@@ -24,25 +24,30 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
                 <form id="scan-form" method="POST" action="{{ route('defects.store') }}" enctype="multipart/form-data" class="space-y-4">
                     @csrf
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Código de barras</label>
+                            <input
+                                id="barcode"
+                                name="barcode"
+                                type="text"
+                                class=" mt-1 w-full border rounded p-2"
+                                autocomplete="off"
+                                autocapitalize="off"
+                                spellcheck="false"
+                                inputmode="none"     {{-- evita teclado móvil si el browser respeta --}}
+                                autofocus
+                                required
+                            >
+                            <p class="text-xs text-gray-500 mt-1">Enfoca el cursor aquí y escanea. La pistola escribe los dígitos y suele enviar Enter al final.</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Nombre (si no existe)</label>
+                            <input name="name" class="mt-1 w-full border rounded p-2" value="{{ old('name') }}">
+                        </div>
 
-                    {{-- 1) Campo para pistola --}}
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Código de barras</label>
-                        <input
-                            id="barcode"
-                            name="barcode"
-                            type="text"
-                            class="mt-1 w-full border rounded p-3 text-lg tracking-widest"
-                            autocomplete="off"
-                            autocapitalize="off"
-                            spellcheck="false"
-                            inputmode="none"     {{-- evita teclado móvil si el browser respeta --}}
-                            autofocus
-                            required
-                        >
-                        <p class="text-xs text-gray-500 mt-1">Enfoca el cursor aquí y escanea. La pistola escribe los dígitos y suele enviar Enter al final.</p>
                     </div>
-
+                    {{-- 1) Campo para pistola --}}
                     {{-- 2) Datos mínimos para guardar rápido --}}
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
@@ -80,6 +85,7 @@
                         </div>
                     </div>
                     <div>
+
                         <label class="block text-sm font-medium text-gray-700">Foto (opcional)</label>
                         <input type="file" name="photo" accept="image/*" class="mt-1 w-full border rounded p-2">
                     </div>
