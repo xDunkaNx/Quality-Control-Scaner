@@ -79,6 +79,10 @@
                             <input name="notes" id="notes" class="mt-1 w-full border rounded p-2">
                         </div>
                     </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Foto (opcional)</label>
+                        <input type="file" name="photo" accept="image/*" class="mt-1 w-full border rounded p-2">
+                    </div>
 
                     {{-- Opcional: forzar si detecta duplicado --}}
                     <label class="inline-flex items-center">

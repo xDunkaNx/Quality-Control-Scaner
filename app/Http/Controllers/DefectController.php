@@ -37,6 +37,7 @@ class DefectController extends Controller
 
     public function store(Request $r)
     {
+        // dd("llega");
         $data = $r->validate([
             'barcode'         => 'required|string|max:64',
             'sku'             => 'nullable|string|max:64',

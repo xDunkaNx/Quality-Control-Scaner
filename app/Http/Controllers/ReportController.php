@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use App\Models\Defect;
+use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
 {
@@ -48,5 +49,32 @@ class ReportController extends Controller
 
             fclose($out);
         }, $filename, $headers);
+    }
+    public function weekly(Request $request)
+    {
+        // Filtros opcionales
+        $filters = $request->only(['status', 'type_id', 'loc_id', 'date_from', 'date_to']);
+
+        $defects = Defect::select(
+                'product_id',
+                'defect_type_id',
+                'location_id',
+                DB::raw('COUNT(*) as total_defects')
+            )
+            ->with(['product', 'type', 'location'])
+            ->when($filters['status'] ?? null, fn($q, $v) => $q->where('status', $v))
+            ->when($filters['type_id'] ?? null, fn($q, $v) => $q->where('defect_type_id', $v))
+            ->when($filters['loc_id'] ?? null, fn($q, $v) => $q->where('location_id', $v))
+            ->when($filters['date_from'] ?? null, fn($q, $v) => $q->whereDate('found_at', '>=', $v))
+            ->when($filters['date_to'] ?? null, fn($q, $v) => $q->whereDate('found_at', '<=', $v))
+            ->groupBy('product_id','defect_type_id','location_id')
+            ->orderBy('total_defects','desc')
+            ->paginate(50)
+            ->appends($request->query());
+
+        $types = \App\Models\DefectType::orderBy('name')->get();
+        $locs  = \App\Models\Location::orderBy('name')->get();
+
+        return view('reports.defects.weekly', compact('defects','types','locs'));
     }
 }
