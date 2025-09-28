@@ -51,7 +51,7 @@
                                 {{ Auth::user()->name }}
                             </button>
                             <div class="absolute right-0 w-48 mt-2 origin-top-right bg-white shadow-lg rounded-md hidden" id="user-dropdown">
-                                <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700">Perfil</a>
+                                {{-- <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700">Perfil</a> --}}
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
                                     <button type="submit" class="block px-4 py-2 text-sm text-gray-700 w-full text-left">
@@ -72,7 +72,7 @@
                     {{-- <a href="{{ route('reports.defects.weekly') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Reportes</a> --}}
 
                     <!-- Menú de usuario para móvil -->
-                    <a href="{{ route('profile.edit') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Perfil</a>
+                    {{-- <a href="{{ route('profile.edit') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Perfil</a> --}}
                     <a href="{{ route('logout') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Cerrar sesión</a>
                 </div>
             </div>

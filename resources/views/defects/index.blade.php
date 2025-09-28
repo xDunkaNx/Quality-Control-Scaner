@@ -34,7 +34,11 @@
 
                 <button class="px-3 py-2 bg-gray-800 text-white rounded">Filtrar</button>
                 <a href="{{ route('defects.index') }}" class="px-3 py-2 border rounded">Limpiar</a>
-                <a href="{{ route('reports.defects.exportCsv', request()->only(['status','type_id','loc_id','date_from','date_to'])) }}"
+                {{-- <a href="{{ route('reports.defects.exportCsv', request()->only(['status','type_id','loc_id','date_from','date_to'])) }}"
+                    class="px-3 py-2 bg-emerald-600 text-white rounded">
+                    Exportar CSV
+                </a> --}}
+                <a 
                     class="px-3 py-2 bg-emerald-600 text-white rounded">
                     Exportar CSV
                 </a>
