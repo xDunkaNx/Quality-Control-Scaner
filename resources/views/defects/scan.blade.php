@@ -74,7 +74,7 @@
                         </div> --}}
                         <div>
                             <label for="unit" class="block text-sm font-medium text-gray-700">Tipo de unidad</label>
-                            <select name="unit" id="unit" class="border rounded p-2 w-full">
+                            <select name="unit" id="unit" class="mt-1 w-full border rounded p-2">
                                 @foreach(['unidad','pack','disp','docena','bolsa','caja'] as $option)
                                 <option value="{{ $option }}" @selected(old('unit') === $option)>{{ ucfirst($option) }}</option>
                                 @endforeach
