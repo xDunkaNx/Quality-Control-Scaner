@@ -40,7 +40,8 @@ class ReportController extends Controller
                             $d->type->name ?? '',
                             $d->location->name ?? $d->location_text ?? '',
                             $d->lot ?? '',
-                            $d->severity ?? '',
+                            // $d->severity ?? '',
+                            $d->unit ?? '',
                             $d->status ?? '',
                             $d->notes ?? '',
                         ]);

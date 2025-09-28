@@ -11,16 +11,17 @@ class Defect extends Model
     use LogsActivity;
     protected $fillable = [
         'product_id','defect_type_id','location_id','location_text',
-        'severity','status','lot','notes','photo_path','found_at',
+        'severity','status','lot','unit','notes','photo_path','found_at',
         'reported_by','resolved_at'
     ];
+
     protected $casts = [
         'found_at' => 'datetime',
     ];
     // Especifica los atributos que quieres auditar
     protected static $logAttributes = [
-        'product_id', 'defect_type_id', 'location_id', 'location_text', 'lot',
-        'notes', 'severity', 'status', 'found_at', 'reported_by', 'photo_path'
+        'product_id','defect_type_id','location_id','location_text','lot','unit',
+        'notes','severity','status','found_at','reported_by','photo_path'
     ];
 
     // Solo guarda los cambios "sucios" (los que realmente han cambiado)

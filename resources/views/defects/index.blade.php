@@ -60,7 +60,8 @@
                                     <th class="py-2 pr-4">Tipo</th>
                                     <th class="py-2 pr-4">Ubicación</th>
                                     <th class="py-2 pr-4">Lote</th>
-                                    <th class="py-2 pr-4">Sev</th>
+                                    <th class="py-2 pr-4">Tipo de unidad</th>
+                                    {{-- <th class="py-2 pr-4">Sev</th> --}}
                                     <th class="py-2 pr-4">Estado</th>
                                     <th>Foto</th>
                                 </tr>
@@ -73,7 +74,8 @@
                                         <td class="py-2 pr-4">{{ $d->type->name }}</td>
                                         <td class="py-2 pr-4">{{ $d->location->name ?? $d->location_text ?? '—' }}</td>
                                         <td class="py-2 pr-4">{{ $d->lot ?? '—' }}</td>
-                                        <td class="py-2 pr-4">{{ $d->severity }}</td>
+                                        <td class="py-2 pr-4">{{ $d->unit ?? '—' }}</td>
+                                        {{-- <td class="py-2 pr-4">{{ $d->severity }}</td> --}}
                                         <td>
                                         @can('manage defects')
                                             <form method="POST" action="{{ route('defects.updateStatus',$d) }}">

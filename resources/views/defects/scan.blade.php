@@ -66,15 +66,23 @@
                                     <option value="{{ $loc->id }}">{{ $loc->name }}</option>
                                 @endforeach
                             </select>
-                            <input name="location_text" id="location_text" class="mt-2 w-full border rounded p-2" placeholder="Texto libre (opcional)">
+                            {{-- <input name="location_text" id="location_text" class="mt-2 w-full border rounded p-2" placeholder="Texto libre (opcional)"> --}}
                         </div>
-                        <div>
+                        {{-- <div>
                             <label class="block text-sm font-medium text-gray-700">Severidad (1-5)</label>
                             <input type="number" name="severity" id="severity" min="1" max="5" value="1" class="mt-1 w-full border rounded p-2">
+                        </div> --}}
+                        <div>
+                            <label for="unit" class="block text-sm font-medium text-gray-700">Tipo de unidad</label>
+                            <select name="unit" id="unit" class="border rounded p-2 w-full">
+                                @foreach(['unidad','pack','disp','docena','bolsa','caja'] as $option)
+                                <option value="{{ $option }}" @selected(old('unit') === $option)>{{ ucfirst($option) }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">                       
                         <div>
                             <label class="block text-sm font-medium text-gray-700">Lote (opcional)</label>
                             <input name="lot" id="lot" class="mt-1 w-full border rounded p-2">

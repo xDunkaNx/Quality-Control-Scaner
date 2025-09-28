@@ -22,6 +22,7 @@ return new class extends Migration {
             // metadatos del evento
             $t->unsignedTinyInteger('severity')->default(1);    // 1..5
             $t->string('status')->default('open')->index();      // open|review|closed|scrapped
+            $t->enum('unit', ['unidad','pack','disp','docena','bolsa','caja'])->default('unidad')->index();
             $t->string('lot')->nullable()->index();
             $t->text('notes')->nullable();
             $t->string('photo_path')->nullable();

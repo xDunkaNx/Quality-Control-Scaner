@@ -36,6 +36,7 @@ class DefectSeeder extends Seeder
                 'lot'            => 'Lote-' . rand(100, 999),
                 'notes'          => 'Nota de prueba ' . $i,
                 'severity'       => rand(1, 5),
+                'unit'           => 'unidad',
                 'status'         => 'open', // valores: open|review|closed|scrapped
                 'found_at'       => Carbon::now()->subDays(rand(0, 7))->subMinutes(rand(0, 1440)),
                 'reported_by'    => 1,      // id del admin que creaste en el seeder
