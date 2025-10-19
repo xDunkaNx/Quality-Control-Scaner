@@ -79,7 +79,7 @@
                     <!-- Menú de usuario para móvil -->
                     {{-- <a href="{{ route('profile.edit') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Perfil</a> --}}
                     <a class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Perfil</a>
-                    <a href="{{ route('logout') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Cerrar sesión</a>
+                    <a method="POST" href="{{ route('logout') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Cerrar sesión</a>
                 </div>
             </div>
         </div>
