@@ -173,12 +173,13 @@
                                 method: "POST",
                                 headers: {
                                     "Content-Type": "application/json",
+                                    "Accept": "application/json", // evita el 302 con HTML
                                     "X-CSRF-TOKEN": "{{ csrf_token() }}"
                                 },
                                 body: JSON.stringify({ barcode: barcodeValue })
                             });
 
-                            if (!response.ok) throw new Error("Error en la solicitud");
+                            // if (!response.ok) throw new Error("Error en la solicitud");
 
                             const data = await response.json();
                             console.log("Nombre del producto:", data.name);
