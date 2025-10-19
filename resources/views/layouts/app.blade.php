@@ -36,13 +36,17 @@
                                 Zero Merma
                             </div>
                             <div class="hidden sm:block sm:ml-6">
-                                <div class="flex space-x-4">
-                                    <a href="{{ route('defects.index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Defectos</a>
-                                    <a href="{{ route('defects.scan') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Scanear</a>
-                                    <a href="{{ route('reports.defects.weekly') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Reportes</a>
-                                    {{-- <a  class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Reportes</a> --}}
-                                    <!-- Menú de usuario -->
-                                </div>
+                                @php
+                                    $active = 'bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium';
+                                    $base   = 'text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium';
+                                @endphp
+
+                                <a href="{{ route('defects.index') }}"
+                                    class="{{ request()->routeIs('defects.index') ? $active : $base }}">Defectos</a>
+                                <a href="{{ route('defects.scan') }}"
+                                    class="{{ request()->routeIs('defects.scan') ? $active : $base }}">Scanear</a>
+                                <a href="{{ route('reports.defects.weekly') }}"
+                                    class="{{ request()->routeIs('reports.defects.*') ? $active : $base }}">Reportes</a>
                             </div>
                         </div>
                         
@@ -66,7 +70,7 @@
             </div>
 
             <!-- Menú móvil -->
-            <div class="sm:hidden" id="mobile-menu">
+            <div class="sm:hidden hidden" id="mobile-menu">
                 <div class="px-2 pt-2 pb-3 space-y-1">
                     <a href="{{ route('defects.index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Defectos</a>
                     <a href="{{ route('defects.scan') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Scanear</a>
@@ -101,18 +105,48 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const userButton = document.querySelector('[aria-haspopup="true"]');
-        const dropdownMenu = document.querySelector('.absolute.right-0.w-48.mt-2.origin-top-right.bg-white.shadow-lg.rounded-md');
+        const dropdownMenu = document.getElementById('user-dropdown');
+        const mobileToggle = document.querySelector('[aria-controls="mobile-menu"]');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        if (mobileToggle) {
+            mobileToggle.setAttribute('aria-expanded', 'false');
+        }
 
         if (userButton && dropdownMenu) {
-            userButton.addEventListener('click', function () {
+            userButton.addEventListener('click', function (event) {
+                event.stopPropagation();
                 dropdownMenu.classList.toggle('hidden');
             });
         }
 
-        // Cerrar el menú si se hace clic fuera de él
+        if (mobileToggle && mobileMenu) {
+            mobileToggle.addEventListener('click', function (event) {
+                event.stopPropagation();
+                const isOpen = !mobileMenu.classList.contains('hidden');
+                mobileMenu.classList.toggle('hidden');
+                mobileToggle.setAttribute('aria-expanded', (!isOpen).toString());
+            });
+        }
+
         document.addEventListener('click', function (event) {
-            if (!dropdownMenu.contains(event.target) && !userButton.contains(event.target)) {
+            if (
+                dropdownMenu &&
+                userButton &&
+                !dropdownMenu.contains(event.target) &&
+                !userButton.contains(event.target)
+            ) {
                 dropdownMenu.classList.add('hidden');
+            }
+
+            if (
+                mobileMenu &&
+                mobileToggle &&
+                !mobileMenu.contains(event.target) &&
+                !mobileToggle.contains(event.target)
+            ) {
+                mobileMenu.classList.add('hidden');
+                mobileToggle.setAttribute('aria-expanded', 'false');
             }
         });
     });
