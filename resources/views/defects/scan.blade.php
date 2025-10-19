@@ -105,7 +105,7 @@
                     </label>
 
                     <div class="flex items-center gap-3">
-                        <button id="submit-btn" class="px-4 py-2 bg-indigo-600 text-white rounded">Guardar</button>
+                        <button id="submit-btn" type="button" class="px-4 py-2 bg-indigo-600 text-white rounded">Guardar</button>
 
                         {{-- Modo autosubmit: cuando la pistola envía Enter, se intenta enviar si hay datos mínimos --}}
                         <label class="inline-flex items-center text-sm">
@@ -132,7 +132,8 @@
             const autosubmit = document.getElementById('autosubmit');
             const lockFocus = document.getElementById('lockFocus');
             const defectType = document.getElementById('defect_type_id');
-
+            const submitBtn = document.getElementById('submit-btn');
+            form.reset();
             // 1) Mantener foco en el input (útil en piso)
             const focusBarcode = () => { if (lockFocus.checked) barcode.focus({ preventScroll:true }); };
             window.addEventListener('load', focusBarcode);
@@ -141,15 +142,55 @@
                 // si hacen click fuera de inputs, re-enfoca
                 if (lockFocus.checked && !e.target.closest('input,select,textarea,button')) focusBarcode();
             });
+                submitBtn.addEventListener('click', () => {
+                    const barcodeValue = barcode.value.trim();
+                    if (barcodeValue.length === 0) {
+                    alert('Debes ingresar o escanear un código de barras.');
+                    barcode.focus();
+                    return;
+                    }
+                    if (!defectType.value) {
+                    alert('Selecciona un tipo de defecto.');
+                    defectType.focus();
+                    return;
+                    }
+                    // Si pasa las validaciones, envía el formulario
+                    form.submit();
+                });
 
             // 2) Si la pistola envía Enter al final del código, intentar enviar
-            barcode.addEventListener('keydown', (e) => {
+            barcode.addEventListener('keyup', async (e) => {
                 if (e.key === 'Enter' && autosubmit.checked) {
                     e.preventDefault();
                     // Valida mínimos: barcode + defect_type
-                    if (barcode.value.trim().length > 0 && defectType.value) {
-                        form.submit();
-                    }
+                    const barcodeValue = barcode.value.trim();
+                    console.log('len:', barcodeValue.length);
+                    console.log('defectType:', defectType.value);
+                    if (barcodeValue.length === 0 || !defectType.value) return;
+                        // form.submit();
+                        try {
+                            const response = await fetch("{{ route('defects.getName') }}", {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                                },
+                                body: JSON.stringify({ barcode: barcodeValue })
+                            });
+
+                            if (!response.ok) throw new Error("Error en la solicitud");
+
+                            const data = await response.json();
+                            console.log("Nombre del producto:", data.name);
+
+                            // Muestra el nombre si deseas en el campo "name"
+                            const nameInput = document.querySelector('input[name="name"]');
+                            if (nameInput) nameInput.value = data.name;
+                            // Luego puedes decidir si auto-envías el formulario:
+                            // form.submit();
+                        } catch (error) {
+                            console.error("Error al consultar el nombre:", error);
+                        }
                 }
             });
 

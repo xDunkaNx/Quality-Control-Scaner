@@ -122,4 +122,21 @@ class DefectController extends Controller
         return back()->with('ok','Estado actualizado');
     }
 
+    public function getName(Request $r)
+        {
+            $data = $r->validate([
+                'id'      => 'required_without:barcode|integer|exists:products,id',
+                'barcode' => 'required_without:id|string|max:64|exists:products,barcode',
+            ]);
+
+            $query = Product::query()
+                ->when(isset($data['id']), fn($q) => $q->whereKey($data['id']))
+                ->when(isset($data['barcode']), fn($q) => $q->where('barcode', $data['barcode']));
+
+            $name = $query->value('name') ?? 'Desconocido';
+
+            return response()->json([
+                'name' => $name,
+            ], 200);
+        }
 }

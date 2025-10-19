@@ -52,6 +52,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/reports/defects/export-csv', [ReportController::class, 'exportCsv'])
             ->name('reports.defects.exportCsv');
     });
+    Route::post('/defects/get-name', [DefectController::class, 'getName'])->name('defects.getName');
 });
 
 require __DIR__.'/auth.php';
