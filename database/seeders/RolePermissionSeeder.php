@@ -13,9 +13,10 @@ class RolePermissionSeeder extends Seeder
     public function run(): void
     {
         // Permisos
-        $scan     = Permission::firstOrCreate(['name' => 'scan defects']);
-        $manage   = Permission::firstOrCreate(['name' => 'manage defects']);
-        $reports  = Permission::firstOrCreate(['name' => 'view reports']);
+        $scan        = Permission::firstOrCreate(['name' => 'scan defects']);
+        $manage      = Permission::firstOrCreate(['name' => 'manage defects']);
+        $reports     = Permission::firstOrCreate(['name' => 'view reports']);
+        $manageUsers = Permission::firstOrCreate(['name' => 'manage users']);
 
         // Roles
         $admin      = Role::firstOrCreate(['name' => 'admin']);

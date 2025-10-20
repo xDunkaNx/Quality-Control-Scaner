@@ -47,6 +47,10 @@
                                     class="{{ request()->routeIs('defects.scan') ? $active : $base }}">Scanear</a>
                                 <a href="{{ route('reports.defects.weekly') }}"
                                     class="{{ request()->routeIs('reports.defects.*') ? $active : $base }}">Reportes</a>
+                                @can('manage users')
+                                    <a href="{{ route('users.index') }}"
+                                        class="{{ request()->routeIs('users.*') ? $active : $base }}">Usuarios</a>
+                                @endcan
                             </div>
                         </div>
                         
@@ -74,6 +78,9 @@
                 <div class="px-2 pt-2 pb-3 space-y-1">
                     <a href="{{ route('defects.index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Defectos</a>
                     <a href="{{ route('defects.scan') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Scanear</a>
+                    @can('manage users')
+                        <a href="{{ route('users.index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Usuarios</a>
+                    @endcan
                     {{-- <a href="{{ route('reports.defects.weekly') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Reportes</a> --}}
 
                     <!-- Menú de usuario para móvil -->

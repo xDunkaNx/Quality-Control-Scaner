@@ -3,6 +3,7 @@
 use App\Http\Controllers\DefectController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -53,6 +54,10 @@ Route::middleware('auth')->group(function () {
             ->name('reports.defects.exportCsv');
     });
     Route::post('/defects/get-name', [DefectController::class, 'getName'])->name('defects.getName');
+
+    Route::middleware('permission:manage users')->group(function () {
+        Route::resource('users', UserController::class)->except(['show']);
+    });
 });
 
 require __DIR__.'/auth.php';
