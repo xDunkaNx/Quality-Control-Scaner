@@ -1,3 +1,111 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    body {
+        @apply bg-slate-950 text-slate-900;
+    }
+}
+
+@layer components {
+    .app-shell {
+        @apply min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950;
+    }
+
+    .app-surface {
+        @apply backdrop-blur-sm bg-slate-900/70 border border-slate-800;
+    }
+
+    .app-card {
+        @apply app-surface rounded-3xl shadow-xl shadow-slate-950/60;
+    }
+
+    .app-label {
+        @apply text-xs font-semibold uppercase tracking-wide text-slate-400;
+    }
+
+    .app-input {
+        @apply mt-2 block w-full rounded-xl border border-slate-800 bg-slate-900/70 px-4 py-3 text-sm text-slate-100 placeholder-slate-500 transition focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400/40;
+    }
+
+    .app-select {
+        @apply app-input appearance-none pr-10;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='%23a5f3fc'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+        background-size: 1.1rem;
+        background-repeat: no-repeat;
+        background-position: right 1rem center;
+    }
+
+    .app-section-title {
+        @apply text-sm font-semibold text-slate-200;
+    }
+
+    .app-badge {
+        @apply inline-flex items-center rounded-full border border-emerald-400/40 bg-emerald-400/10 px-2.5 py-1 text-xs font-semibold uppercase tracking-wide text-emerald-200;
+    }
+
+    .app-cta {
+        @apply inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 px-5 py-3 text-sm font-semibold text-slate-950 shadow-lg shadow-emerald-500/20 transition hover:shadow-emerald-500/40 focus:outline-none focus:ring-2 focus:ring-emerald-400/60;
+    }
+
+    .app-cta-secondary {
+        @apply inline-flex items-center justify-center gap-2 rounded-xl border border-slate-700 bg-slate-900/60 px-5 py-3 text-sm font-semibold text-slate-200 transition hover:border-slate-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-slate-500/50;
+    }
+
+    .app-fieldset {
+        @apply app-card p-6;
+    }
+
+    .app-page {
+        @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+    }
+
+    .app-alert {
+        @apply rounded-3xl border px-6 py-4 text-sm shadow-lg;
+    }
+
+    .app-alert-success {
+        @apply app-alert border-emerald-400/40 bg-emerald-500/10 text-emerald-100 shadow-emerald-500/20;
+    }
+
+    .app-alert-warning {
+        @apply app-alert border-amber-400/40 bg-amber-500/10 text-amber-100 shadow-amber-500/20;
+    }
+
+    .app-alert-danger {
+        @apply app-alert border-rose-500/50 bg-rose-500/10 text-rose-100 shadow-rose-500/30;
+    }
+
+    .app-data-card {
+        @apply app-card p-6 sm:p-8;
+    }
+
+    .app-table-wrapper {
+        @apply overflow-hidden rounded-3xl border border-slate-800 bg-slate-950/70;
+    }
+
+    .app-table {
+        @apply min-w-full divide-y divide-slate-800 text-sm text-slate-200;
+    }
+
+    .app-table thead {
+        @apply bg-slate-900/80 text-xs font-semibold uppercase tracking-wide text-slate-400;
+    }
+
+    .app-table th {
+        @apply px-4 py-3 text-left;
+    }
+
+    .app-table tbody tr {
+        @apply border-b border-slate-800/60 transition hover:bg-slate-900/40;
+    }
+
+    .app-table td {
+        @apply px-4 py-3 align-middle text-slate-200;
+    }
+
+    .app-pill {
+        @apply inline-flex items-center gap-2 rounded-full border border-slate-700/70 bg-slate-900/70 px-3 py-1 text-xs font-medium uppercase tracking-wide text-slate-300;
+    }
+}

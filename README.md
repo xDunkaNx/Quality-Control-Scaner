@@ -46,6 +46,13 @@ Se añadieron dos módulos en el panel autenticado (visible con el permiso `mana
 
 Ambos catálogos se listan en la navegación principal para perfiles autorizados.
 
+## Experiencia de escaneo renovada
+
+- La vista de escaneo fue rediseñada con un flujo guiado: primero el código, luego el contexto (ubicación, lote, notas) y finalmente la confirmación.
+- Se incluyeron atajos visuales (auto-guardado, mantenimiento de foco, uso de Shift + Enter) y tarjetas laterales con buenas prácticas para los operarios.
+- El formulario aplica validaciones previas antes de enviar y autocompleta el nombre del producto si existe en la base al leer el código.
+- Se aplicó un tema oscuro consistente al panel completo (listados, formularios y navegación) para una experiencia uniforme con el nuevo escáner.
+
 ## Permisos y roles
 
 Los roles y permisos se gestionan con `spatie/laravel-permission`. Además de los existentes, ahora se crea el permiso `manage catalogs`.
@@ -98,4 +105,3 @@ php artisan test
 ```
 
 > Nota: la suite de Breeze usa SQLite por defecto. Si el entorno no tiene el driver instalado aparecerá el error `could not find driver`. Instala `pdo_sqlite` o actualiza la configuración de tests (`phpunit.xml`) según tu motor de base de datos.
-

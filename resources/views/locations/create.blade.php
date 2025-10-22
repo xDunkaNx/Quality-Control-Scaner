@@ -1,104 +1,112 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Nueva ubicación
-        </h2>
-    </x-slot>
-
-    <div class="py-6">
-        <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white shadow-sm sm:rounded-lg">
-                <div class="p-6">
-                    @if ($errors->any())
-                        <div class="mb-4 rounded-md bg-red-50 p-4 text-red-800">
-                            <p class="font-semibold">Revisa los errores:</p>
-                            <ul class="mt-2 list-disc list-inside space-y-1 text-sm">
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
-
-                    <form method="POST" action="{{ route('locations.store') }}" class="space-y-4">
-                        @csrf
-
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Código</label>
-                            <input
-                                type="text"
-                                name="code"
-                                value="{{ old('code') }}"
-                                class="mt-1 block w-full border rounded px-3 py-2 font-mono"
-                                placeholder="EJ: SUC_TRUJILLO"
-                                required
-                            />
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Nombre</label>
-                            <input
-                                type="text"
-                                name="name"
-                                value="{{ old('name') }}"
-                                class="mt-1 block w-full border rounded px-3 py-2"
-                                required
-                            />
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Ubicación superior</label>
-                            <select
-                                name="parent_code"
-                                class="block w-full border rounded px-3 py-2"
-                            >
-                                <option value="">Sin jerarquía</option>
-                                @foreach ($parents as $parent)
-                                    <option
-                                        value="{{ $parent->code }}"
-                                        @selected(old('parent_code') === $parent->code)
-                                    >
-                                        {{ $parent->name }} ({{ $parent->code }})
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Latitud</label>
-                                <input
-                                    type="number"
-                                    name="latitude"
-                                    value="{{ old('latitude') }}"
-                                    step="0.000001"
-                                    class="mt-1 block w-full border rounded px-3 py-2"
-                                />
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Longitud</label>
-                                <input
-                                    type="number"
-                                    name="longitude"
-                                    value="{{ old('longitude') }}"
-                                    step="0.000001"
-                                    class="mt-1 block w-full border rounded px-3 py-2"
-                                />
-                            </div>
-                        </div>
-
-                        <div class="flex gap-3 justify-end">
-                            <a href="{{ route('locations.index') }}" class="px-4 py-2 border rounded">
-                                Cancelar
-                            </a>
-                            <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition">
-                                Guardar
-                            </button>
-                        </div>
-                    </form>
-                </div>
+        <div class="space-y-2">
+            <span class="app-badge">Catálogo</span>
+            <div>
+                <h2 class="text-2xl font-semibold text-white">Nueva ubicación</h2>
+                <p class="text-sm text-slate-400">Registra sucursales o zonas para localizar mermas sin ambigüedades.</p>
             </div>
         </div>
-    </div>
-</x-app-layout>
+    </x-slot>
 
+    <section class="app-page py-8">
+        <div class="mx-auto max-w-3xl space-y-6">
+            <div class="app-data-card">
+                @if ($errors->any())
+                    <div class="app-alert-danger mb-6">
+                        <p class="font-semibold mb-2 text-rose-100">Revisa los campos:</p>
+                        <ul class="list-disc list-inside space-y-1 text-sm text-rose-100/90">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                <form method="POST" action="{{ route('locations.store') }}" class="space-y-6">
+                    @csrf
+
+                    <div class="grid gap-6 sm:grid-cols-2">
+                        <div>
+                            <label class="app-label" for="code">Código</label>
+                            <input
+                                type="text"
+                                id="code"
+                                name="code"
+                                value="{{ old('code') }}"
+                                class="app-input font-mono uppercase"
+                                placeholder="Ej: SUC_TRUJILLO"
+                                required
+                            />
+                        </div>
+
+                        <div>
+                            <label class="app-label" for="name">Nombre</label>
+                            <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                value="{{ old('name') }}"
+                                class="app-input"
+                                required
+                            />
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="app-label" for="parent_code">Ubicación superior</label>
+                        <select
+                            name="parent_code"
+                            id="parent_code"
+                            class="app-select"
+                        >
+                            <option value="">Sin jerarquía</option>
+                            @foreach ($parents as $parent)
+                                <option
+                                    value="{{ $parent->code }}"
+                                    @selected(old('parent_code') === $parent->code)
+                                >
+                                    {{ $parent->name }} ({{ $parent->code }})
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="grid gap-6 sm:grid-cols-2">
+                        <div>
+                            <label class="app-label" for="latitude">Latitud</label>
+                            <input
+                                type="number"
+                                id="latitude"
+                                name="latitude"
+                                value="{{ old('latitude') }}"
+                                step="0.000001"
+                                class="app-input"
+                            />
+                        </div>
+                        <div>
+                            <label class="app-label" for="longitude">Longitud</label>
+                            <input
+                                type="number"
+                                id="longitude"
+                                name="longitude"
+                                value="{{ old('longitude') }}"
+                                step="0.000001"
+                                class="app-input"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+                        <a href="{{ route('locations.index') }}" class="app-cta-secondary">
+                            Cancelar
+                        </a>
+                        <button type="submit" class="app-cta">
+                            Guardar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</x-app-layout>

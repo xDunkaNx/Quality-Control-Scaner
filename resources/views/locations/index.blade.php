@@ -1,124 +1,149 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Ubicaciones
-        </h2>
+        <div class="space-y-2">
+            <span class="app-badge">Catálogo</span>
+            <div>
+                <h2 class="text-2xl font-semibold text-white">Ubicaciones</h2>
+                <p class="text-sm text-slate-400">Organiza sucursales, almacenes y zonas para ubicar cada merma sin ambigüedades.</p>
+            </div>
+        </div>
     </x-slot>
 
-    <div class="py-6">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            @if (session('ok'))
-                <div class="mb-4 rounded-md bg-green-50 p-4 text-green-800">
-                    {{ session('ok') }}
-                </div>
-            @endif
+    <section class="app-page py-8 space-y-6">
+        @if (session('ok'))
+            <div class="app-alert-success">
+                {{ session('ok') }}
+            </div>
+        @endif
 
-            @if (session('error'))
-                <div class="mb-4 rounded-md bg-red-50 p-4 text-red-800">
-                    {{ session('error') }}
-                </div>
-            @endif
+        @if (session('error'))
+            <div class="app-alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
 
-            <div class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <form method="GET" class="flex gap-2">
-                    <input
-                        type="text"
-                        name="search"
-                        value="{{ request('search') }}"
-                        placeholder="Buscar por nombre o código"
-                        class="border rounded px-3 py-2 w-64"
-                    />
-                    <button class="px-4 py-2 bg-gray-800 text-white rounded">
-                        Buscar
-                    </button>
-                    @if (request('search'))
-                        <a href="{{ route('locations.index') }}" class="px-4 py-2 border rounded">
-                            Limpiar
-                        </a>
-                    @endif
-                </form>
+        <div class="app-card p-6 sm:p-8">
+            <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+                <div>
+                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Buscar</p>
+                    <h3 class="text-lg font-semibold text-white">Filtra por código, nombre o jerarquía</h3>
+                </div>
 
                 <a
                     href="{{ route('locations.create') }}"
-                    class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition"
+                    class="app-cta"
                 >
                     Nueva ubicación
                 </a>
             </div>
 
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-4">
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full text-sm">
-                            <thead>
-                                <tr class="text-left border-b">
-                                    <th class="py-2 pr-4">Código</th>
-                                    <th class="py-2 pr-4">Nombre</th>
-                                    <th class="py-2 pr-4">Superior</th>
-                                    <th class="py-2 pr-4">Coordenadas</th>
-                                    <th class="py-2 pr-4">Actualizado</th>
-                                    <th class="py-2 pr-4">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse ($locations as $location)
-                                    <tr class="border-b">
-                                        <td class="py-2 pr-4 font-mono">{{ $location->code }}</td>
-                                        <td class="py-2 pr-4">{{ $location->name }}</td>
-                                        <td class="py-2 pr-4">
-                                            {{ $location->parent_code ?? '—' }}
-                                        </td>
-                                        <td class="py-2 pr-4">
-                                            @if ($location->latitude && $location->longitude)
-                                                <span class="font-mono">
-                                                    {{ number_format($location->latitude, 6) }},
-                                                    {{ number_format($location->longitude, 6) }}
-                                                </span>
-                                            @else
-                                                <span class="text-gray-400">—</span>
-                                            @endif
-                                        </td>
-                                        <td class="py-2 pr-4">
-                                            {{ $location->updated_at?->format('Y-m-d') ?? '—' }}
-                                        </td>
-                                        <td class="py-2 pr-4 space-x-2">
-                                            <a
-                                                href="{{ route('locations.edit', $location) }}"
-                                                class="text-indigo-600 hover:underline"
-                                            >
-                                                Editar
-                                            </a>
-                                            <form
-                                                action="{{ route('locations.destroy', $location) }}"
-                                                method="POST"
-                                                class="inline"
-                                                onsubmit="return confirm('¿Eliminar esta ubicación?');"
-                                            >
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="text-red-600 hover:underline">
-                                                    Eliminar
-                                                </button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="6" class="py-4 text-center text-gray-500">
-                                            No hay ubicaciones registradas.
-                                        </td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
+            <form method="GET" class="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
+                <div class="flex flex-1 items-center gap-3">
+                    <input
+                        type="text"
+                        name="search"
+                        value="{{ request('search') }}"
+                        placeholder="Ej: Almacén A, Gondola-07, SUC_TRUJILLO..."
+                        class="app-input"
+                    />
+                    <button class="app-cta-secondary">
+                        Buscar
+                    </button>
+                </div>
+                @if (request('search'))
+                    <a href="{{ route('locations.index') }}" class="app-cta-secondary">
+                        Limpiar
+                    </a>
+                @endif
+            </form>
+        </div>
 
-                    <div class="mt-4">
-                        {{ $locations->links() }}
-                    </div>
+        <div class="app-data-card space-y-6">
+            <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Resultados</p>
+                    <h3 class="text-lg font-semibold text-white">Listado de ubicaciones activas</h3>
+                </div>
+                <span class="app-pill">{{ number_format($locations->total()) }} ubicaciones</span>
+            </div>
+
+            <div class="app-table-wrapper">
+                <div class="overflow-x-auto">
+                    <table class="app-table">
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Nombre</th>
+                                <th>Superior</th>
+                                <th>Coordenadas</th>
+                                <th>Actualizado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($locations as $location)
+                                <tr>
+                                    <td class="font-mono text-xs">{{ $location->code }}</td>
+                                    <td>{{ $location->name }}</td>
+                                    <td>
+                                        @if ($location->parent_code)
+                                            <span class="app-pill">{{ $location->parent_code }}</span>
+                                        @else
+                                            <span class="text-slate-500">Raíz</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($location->latitude && $location->longitude)
+                                            <span class="font-mono text-xs text-slate-300">
+                                                {{ number_format($location->latitude, 6) }},
+                                                {{ number_format($location->longitude, 6) }}
+                                            </span>
+                                        @else
+                                            <span class="text-slate-500">—</span>
+                                        @endif
+                                    </td>
+                                    <td>{{ $location->updated_at?->format('Y-m-d') ?? '—' }}</td>
+                                    <td class="space-x-3">
+                                        <a
+                                            href="{{ route('locations.edit', $location) }}"
+                                            class="text-emerald-300 hover:underline"
+                                        >
+                                            Editar
+                                        </a>
+                                        <form
+                                            action="{{ route('locations.destroy', $location) }}"
+                                            method="POST"
+                                            class="inline"
+                                            onsubmit="return confirm('¿Eliminar esta ubicación?');"
+                                        >
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-rose-300 hover:underline">
+                                                Eliminar
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="6" class="py-6 text-center text-slate-500">
+                                        No hay ubicaciones registradas.
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                <p class="text-xs text-slate-500">
+                    Página {{ $locations->currentPage() }} de {{ $locations->lastPage() }}
+                </p>
+                <div class="self-end">
+                    {{ $locations->links() }}
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 </x-app-layout>
-
