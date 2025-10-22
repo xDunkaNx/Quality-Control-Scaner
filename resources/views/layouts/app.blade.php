@@ -51,6 +51,14 @@
                                     <a href="{{ route('users.index') }}"
                                         class="{{ request()->routeIs('users.*') ? $active : $base }}">Usuarios</a>
                                 @endcan
+                    @can('manage catalogs')
+                        <x-nav-link :href="route('defect-types.index')" :active="request()->routeIs('defect-types.*')">
+                            Tipos de defecto
+                        </x-nav-link>
+                        <x-nav-link :href="route('locations.index')" :active="request()->routeIs('locations.*')">
+                            Ubicaciones
+                        </x-nav-link>
+                    @endcan
                             </div>
                         </div>
                         
@@ -82,7 +90,14 @@
                         <a href="{{ route('users.index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Usuarios</a>
                     @endcan
                     {{-- <a href="{{ route('reports.defects.weekly') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Reportes</a> --}}
-
+                                @can('manage catalogs')
+                <x-responsive-nav-link :href="route('defect-types.index')" :active="request()->routeIs('defect-types.*')">
+                    Tipos de defecto
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('locations.index')" :active="request()->routeIs('locations.*')">
+                    Ubicaciones
+                </x-responsive-nav-link>
+            @endcan
                     <!-- Menú de usuario para móvil -->
                     {{-- <a href="{{ route('profile.edit') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Perfil</a> --}}
                     <a class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Perfil</a>

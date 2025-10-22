@@ -15,6 +15,14 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    @can('manage catalogs')
+                        <x-nav-link :href="route('defect-types.index')" :active="request()->routeIs('defect-types.*')">
+                            Tipos de defecto
+                        </x-nav-link>
+                        <x-nav-link :href="route('locations.index')" :active="request()->routeIs('locations.*')">
+                            Ubicaciones
+                        </x-nav-link>
+                    @endcan
                 </div>
             </div>
 
@@ -70,6 +78,14 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+            @can('manage catalogs')
+                <x-responsive-nav-link :href="route('defect-types.index')" :active="request()->routeIs('defect-types.*')">
+                    Tipos de defecto
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('locations.index')" :active="request()->routeIs('locations.*')">
+                    Ubicaciones
+                </x-responsive-nav-link>
+            @endcan
         </div>
 
         <!-- Responsive Settings Options -->

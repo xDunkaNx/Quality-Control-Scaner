@@ -1,61 +1,101 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# DEFECTOS
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplicación interna para el registro, seguimiento y análisis de defectos detectados en tiendas o centros logísticos. El proyecto está construido con Laravel 12 y utiliza Breeze como andamiaje base.
 
-## About Laravel
+## Tabla de contenidos
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- [Requisitos](#requisitos)
+- [Configuración inicial](#configuración-inicial)
+- [Catálogos administrables](#catálogos-administrables)
+- [Permisos y roles](#permisos-y-roles)
+- [Integraciones](#integraciones)
+- [Generación de reportes](#generación-de-reportes)
+- [Pruebas automáticas](#pruebas-automáticas)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Requisitos
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- PHP 8.2+
+- Composer
+- Node.js 18+
+- SQLite (para las pruebas incluidas) u otro motor compatible configurado en `.env`
 
-## Learning Laravel
+## Configuración inicial
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+```bash
+cp .env.example .env              # copia la configuración base
+composer install                  # instala dependencias PHP
+npm install                       # instala dependencias front-end
+php artisan key:generate          # genera APP_KEY
+php artisan migrate               # crea las tablas
+php artisan db:seed               # carga roles, permisos y usuario admin
+```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+El usuario administrador por defecto es `admin@empresa.test` con clave `secret123`.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Catálogos administrables
 
-## Laravel Sponsors
+Se añadieron dos módulos en el panel autenticado (visible con el permiso `manage catalogs`):
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+1. **Tipos de defecto**
+   - CRUD completo con filtros por código y nombre.
+   - Indicador `requires_photo` para forzar fotografía al crear un defecto.
 
-### Premium Partners
+2. **Ubicaciones**
+   - CRUD con jerarquía opcional (`parent_code`) y coordenadas geográficas.
+   - Bloquea la eliminación si hay defectos asociados o sububicaciones.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+Ambos catálogos se listan en la navegación principal para perfiles autorizados.
 
-## Contributing
+## Permisos y roles
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Los roles y permisos se gestionan con `spatie/laravel-permission`. Además de los existentes, ahora se crea el permiso `manage catalogs`.
 
-## Code of Conduct
+Después de desplegar los cambios ejecuta nuevamente el seeder para asegurar que los roles se actualicen:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+php artisan db:seed --class=RolePermissionSeeder
+```
 
-## Security Vulnerabilities
+El rol `admin` recibe todos los permisos automáticamente.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Integraciones
 
-## License
+Se expone una API protegida por token para sincronizar catálogos con otros sistemas.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- **Autenticación**: encabezado `Authorization: Bearer {TOKEN}` o `X-Integration-Token`.
+- **Configurar token**: define `INTEGRATION_TOKEN` en tu `.env`.
+
+### Endpoints
+
+| Método | Ruta                          | Descripción                                |
+| ------ | ----------------------------- | ------------------------------------------ |
+| GET    | `/api/catalogs/defect-types`  | Lista paginada de tipos de defecto.        |
+| GET    | `/api/catalogs/locations`     | Lista paginada de ubicaciones.             |
+
+Parámetros opcionales:
+
+- `search`: filtra por código o nombre.
+- `updated_since`: fecha ISO (p. ej. `2025-01-01T00:00:00Z`) para traer solo registros actualizados desde entonces.
+- `per_page`: tamaño de página entre 10 y 500 (por defecto 100).
+
+Ejemplo:
+
+```bash
+curl -H "Authorization: Bearer $INTEGRATION_TOKEN" \
+  "https://tuservidor/api/catalogs/locations?search=almacen&per_page=50"
+```
+
+La respuesta incluye metadatos de paginación (`current_page`, `last_page`, `next_page_url`, etc.).
+
+## Generación de reportes
+
+Desde el módulo de defectos puedes exportar registros a CSV (`Exportar CSV`) y generar reportes semanales agregados. Ambos respentan los filtros aplicados.
+
+## Pruebas automáticas
+
+```bash
+php artisan test
+```
+
+> Nota: la suite de Breeze usa SQLite por defecto. Si el entorno no tiene el driver instalado aparecerá el error `could not find driver`. Instala `pdo_sqlite` o actualiza la configuración de tests (`phpunit.xml`) según tu motor de base de datos.
+

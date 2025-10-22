@@ -17,6 +17,7 @@ class RolePermissionSeeder extends Seeder
         $manage      = Permission::firstOrCreate(['name' => 'manage defects']);
         $reports     = Permission::firstOrCreate(['name' => 'view reports']);
         $manageUsers = Permission::firstOrCreate(['name' => 'manage users']);
+        $catalogs    = Permission::firstOrCreate(['name' => 'manage catalogs']);
 
         // Roles
         $admin      = Role::firstOrCreate(['name' => 'admin']);

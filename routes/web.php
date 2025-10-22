@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\DefectController;
+use App\Http\Controllers\DefectTypeController;
+use App\Http\Controllers\LocationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserController;
@@ -57,6 +59,11 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware('permission:manage users')->group(function () {
         Route::resource('users', UserController::class)->except(['show']);
+    });
+
+    Route::middleware('permission:manage catalogs')->group(function () {
+        Route::resource('defect-types', DefectTypeController::class)->except(['show']);
+        Route::resource('locations', LocationController::class)->except(['show']);
     });
 });
 
