@@ -92,7 +92,7 @@
                         </div>
 
                         <div class="flex items-center gap-3">
-                            <div class="hidden md:flex items-center gap-3 rounded-full border border-slate-800/80 bg-slate-900/80 px-3 py-1.5">
+                            <div class="relative hidden md:flex items-center gap-3 rounded-full border border-slate-800/80 bg-slate-900/80 px-3 py-1.5">
                                 <span class="flex h-10 w-10 items-center justify-center rounded-full bg-slate-800 text-sm font-semibold text-emerald-200">
                                     {{ $initials }}
                                 </span>
@@ -105,6 +105,18 @@
                                         <path d="M6 8L10 12L14 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                     </svg>
                                 </button>
+
+                                <div id="user-menu" class="hidden absolute right-0 top-full z-40 mt-3 w-56 rounded-2xl border border-slate-800/80 bg-slate-950/95 p-3 shadow-2xl shadow-slate-950/50">
+                                    <a href="{{ route('profile.edit') }}" class="app-cta-secondary mb-2 w-full justify-start text-xs uppercase tracking-wider">
+                                        Perfil
+                                    </a>
+                                    <form method="POST" action="{{ route('logout') }}">
+                                        @csrf
+                                        <button type="submit" class="app-cta w-full justify-start text-xs uppercase tracking-wider">
+                                            Cerrar sesión
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
 
                             <button type="button" class="md:hidden inline-flex items-center justify-center rounded-xl border border-slate-700 bg-slate-900/80 p-2 text-slate-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-emerald-400/50" data-toggle="mobile-menu" aria-controls="mobile-menu" aria-expanded="false">
@@ -152,17 +164,6 @@
                     </div>
                 </div>
 
-                <div id="user-menu" class="hidden absolute right-6 top-20 w-56 rounded-2xl border border-slate-800 bg-slate-950/95 p-3 shadow-2xl shadow-slate-950/50">
-                    <a href="{{ route('profile.edit') }}" class="app-cta-secondary mb-2 w-full justify-start text-xs uppercase tracking-wider">
-                        Perfil
-                    </a>
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button type="submit" class="app-cta w-full justify-start text-xs uppercase tracking-wider">
-                            Cerrar sesión
-                        </button>
-                    </form>
-                </div>
             </nav>
 
             @isset($header)
