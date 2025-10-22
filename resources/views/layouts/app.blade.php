@@ -19,11 +19,11 @@
             <nav class="sticky top-0 z-40 border-b border-slate-800 bg-slate-950/80 backdrop-blur relative">
                 @php
                     $navItems = [
-                        [
-                            'label' => 'Dashboard',
-                            'href' => route('dashboard'),
-                            'active' => request()->routeIs('dashboard'),
-                        ],
+                        // [
+                        //     'label' => 'Dashboard',
+                        //     'href' => route('dashboard'),
+                        //     'active' => request()->routeIs('dashboard'),
+                        // ],
                         [
                             'label' => 'Defectos',
                             'href' => route('defects.index'),
