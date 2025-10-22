@@ -107,9 +107,9 @@
                                 </button>
 
                                 <div id="user-menu" class="hidden absolute right-0 top-full z-40 mt-3 w-56 rounded-2xl border border-slate-800/80 bg-slate-950/95 p-3 shadow-2xl shadow-slate-950/50">
-                                    <a href="{{ route('profile.edit') }}" class="app-cta-secondary mb-2 w-full justify-start text-xs uppercase tracking-wider">
+                                    {{-- <a href="{{ route('profile.edit') }}" class="app-cta-secondary mb-2 w-full justify-start text-xs uppercase tracking-wider">
                                         Perfil
-                                    </a>
+                                    </a> --}}
                                     <form method="POST" action="{{ route('logout') }}">
                                         @csrf
                                         <button type="submit" class="app-cta w-full justify-start text-xs uppercase tracking-wider">
@@ -151,9 +151,9 @@
                         @endforeach
 
                         <div class="flex gap-2">
-                            <a href="{{ route('profile.edit') }}" class="app-cta-secondary flex-1 text-center text-xs uppercase tracking-wide">
+                            {{-- <a href="{{ route('profile.edit') }}" class="app-cta-secondary flex-1 text-center text-xs uppercase tracking-wide">
                                 Perfil
-                            </a>
+                            </a> --}}
                             <form method="POST" action="{{ route('logout') }}" class="flex-1">
                                 @csrf
                                 <button type="submit" class="app-cta flex w-full items-center justify-center text-xs uppercase tracking-wide">
